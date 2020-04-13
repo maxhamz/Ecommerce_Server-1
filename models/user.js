@@ -1,6 +1,5 @@
 'use strict';
-const bcrypt = require('bcryptjs')
-const SALT = bcrypt.genSaltSync(10)
+const {hashPassword} = require('../helpers/bcrypt')
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.Sequelize.Model
   class User extends Model{}
@@ -8,22 +7,43 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      // unique: true,
+      unique: {
+        args: true,
+        msg: 'EMAIL TAKEN'
+      },
       validate: {
         isEmail: {
           args: true,
           msg: 'PLEASE ENTER VALID EMAIL FORMAT'
+        },
+        notNull: {
+          args: true,
+          msg: 'EMAIL REQUIRED'
         }
       }
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'PASSWORD REQUIRED'
+        },
+        len: {
+          args: [6],
+          msg: 'PASSWORD MUST BE AT LEAST 6 CHARACTERS'
+        }
+      }
     },
     role:{
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: {
+          args: true,
+          msg: 'ROLE REQUIRED'
+        },
         isIn: {
           args: [['user', 'admin']],
           msg: 'MUST BE USER OR ADMIN'
@@ -35,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
     hooks: {
       beforeCreate: (instance, option) => {
-        instance.password = bcrypt.hashSync(instance.password, SALT)
+        instance.password = hashPassword(instance.password, SALT)
       }
     }
   });
