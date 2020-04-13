@@ -4,8 +4,7 @@
     "password": "jajabo",
     "database": "database_ecommerce_dev",
     "host": "localhost",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "test": {
     "username": "postgres",

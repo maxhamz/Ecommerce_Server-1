@@ -11,6 +11,16 @@ router.use('/products', productRoutes)
 
 module.exports = function(io) {
 
+    // io.on('connection', function (socket) {
+    //     console.log('User has connected to Index');
+    //     //ON Events
+    //     socket.on('admin', function () {
+    //         console.log('Successful Socket Test');
+    //     });
+
+    //     //End ON Events
+    // });
+
     io.on('connection', (socket) => {
         console.log('User has connected to Index');
 
