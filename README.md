@@ -393,85 +393,6 @@
 <hr>
 <br>
 
-**Invite**
-----
-  Assign member into a project.
-
-* **URL**
-
-  /projects/invite
-
-* **Method:**
-
-  `POST`
-  
-*  **URL Params**
-    None
-
-* **Header Params**<br>
-   `access_token`: string (required)
-
-* **Body/Form Params**<br>
-  `{ "email" : "mail@user.com", "projectId": 2 }`<br>
-  **Required**
-  - `email` : string
-  - `projectId` : integer
-
-* **Success Response:**
-
-  * **Code:** 201 <br />
-    **Content:**<br>
-    `{
-     [
-        {
-            "id": 3
-            "ProjectId": 2,
-            "UserId": 4,
-            "createdAt": "2020-03-30T15:24:12.209Z",
-            "updatedAt": "2020-03-30T15:24:12.209Z",
-            "Project": {
-                "id": 2,
-                "UserId": 4,
-                "title": "liwetan"
-            },
-            "User": {
-                "id": 4,
-                "email": "user@mail.com",
-                "location": "-6.1741;106.8296"
-            }
-        }
-    ]
-}`
- 
-* **Error Responses:**
-  * **Code:** 400 VALIDATION ERROR <br />
-    **Content:** <br>
-    `{
-    "message": [
-        "DUPLICATE ASSIGNMENT"
-    ]
-    }`
-    <br>
-
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
-    **Content:** <br>
-    `{
-      "errors": [
-          "jwt expired"
-      ]
-    }`
-
-  * **Code:** 404 NOT FOUND <br />
-    **Content:** <br>
-     `{
-    "message": [
-        "NOT FOUND"
-    ]
-    }`
-<br>
-<hr>
-<br>
-
 
 **Update Project**
 ----
@@ -592,22 +513,27 @@
 <hr>
 <br>
 
+<br>
+<hr>
+<br>
 
+**PRODUCTS**
+-----
 
-**Fetch Tasks**
+**Get All Products**
 ----
-  Returns a list of all tasks corresponding to a project ID
+  Returns a list of all products
 
 * **URL**
 
-  /projects/:projectid/tasks/
+  /products
 
 * **Method:**
 
   `GET`
   
 *  **URL Params**
-    `:projectid` : integer (required)
+   None
 
 * **Header Params**<br>
    `access_token`: string (required)
@@ -621,42 +547,56 @@
     **Content:**
     <br>
     `{
-     [
+    "data": [
+        {
+            "id": 1,
+            "name": "Actifed 100ml",
+            "description": "Bromhexine HCl 100mg",
+            "category": "otc_limited",
+            "image_url": "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174111/OBT_tpvdcj.png",
+            "price": 70000,
+            "stock": 5000,
+            "createdAt": "2020-04-13T15:13:38.500Z",
+            "updatedAt": "2020-04-13T15:13:38.500Z"
+        },
         {
             "id": 2,
-            "title": "beli kurma",
-            "category": "pending",
-            "ProjectId": 2,
-            "createdAt": "2020-03-30T15:52:30.036Z",
-            "updatedAt": "2020-03-30T15:52:30.036Z",
-            "Project": {
-                "id": 2,
-                "UserId": 1,
-                "title": "liwetan",
-                "createdAt": "2020-03-30T15:24:12.186Z",
-                "updatedAt": "2020-03-30T15:24:12.186Z"
-            }
+            "name": "Panadol Cold & Flu",
+            "description": "Paracetamol 50mg",
+            "category": "otc",
+            "image_url": "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174094/OBAT_BEBAS_FIX_uphnzj.png",
+            "price": 10000,
+            "stock": 5000,
+            "createdAt": "2020-04-13T15:14:39.572Z",
+            "updatedAt": "2020-04-13T15:14:39.572Z"
+        },
+        {
+            "id": 3,
+            "name": "Vitacimin",
+            "description": "Ascorbic Acid 500mg",
+            "category": "herbal",
+            "image_url": "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174005/JAMU_FIX_c3l0j5.png",
+            "price": 2500,
+            "stock": 5000,
+            "createdAt": "2020-04-13T15:15:20.460Z",
+            "updatedAt": "2020-04-13T15:15:20.460Z"
         },
         {
             "id": 4,
-            "title": "cari daun pisang",
-            "category": "pending",
-            "ProjectId": 2,
-            "createdAt": "2020-03-30T15:53:55.352Z",
-            "updatedAt": "2020-03-31T08:29:43.647Z",
-            "Project": {
-                "id": 2,
-                "UserId": 1,
-                "title": "liwetan",
-                "createdAt": "2020-03-30T15:24:12.186Z",
-                "updatedAt": "2020-03-30T15:24:12.186Z"
-            }
+            "name": "Bactroban 10g",
+            "description": "Mupirocin 2%",
+            "category": "prescription",
+            "image_url": "https://cdn-image.hipwee.com/wp-content/uploads/2017/09/hipwee-9888267_20170906021736.png",
+            "price": 22000,
+            "stock": 5000,
+            "createdAt": "2020-04-13T15:16:32.476Z",
+            "updatedAt": "2020-04-13T15:20:46.033Z"
         }
     ]
 }`
- 
+
 * **Error Responses:**
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+  * **Code:** 401 UNAUTHORIZED<br />
     **Content:** <br>
     `{
       "errors": [
@@ -668,7 +608,7 @@
     **Content:** 
     <br>
     `{
-    "message": [
+    "errors": [
         "INTERNAL SERVER ERROR"
     ]
     }`
@@ -677,53 +617,138 @@
 <hr>
 <br>
 
-**Create Task**
+**Get One Product**
 ----
-  Create a task based on project ID
+  Searches one product based on ID
 
 * **URL**
 
-  /projects/:projectid/tasks/
+  /products/:id
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+   `:id` (integer)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+   None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    <br>
+    `{
+        "id": 1,
+        "name": "Actifed 100ml",
+        "description": "Bromhexine HCl 100mg",
+        "category": "otc_limited",
+        "image_url": "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174111/OBT_tpvdcj.png",
+        "price": 70000,
+        "stock": 5000,
+        "createdAt": "2020-04-13T15:13:38.500Z",
+        "updatedAt": "2020-04-13T15:13:38.500Z"
+    }`
+
+* **Error Responses:**
+  * **Code:** 401 UNAUTHORIZED<br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** 
+    <br>
+    `{
+      "errors": [
+          "NOT FOUND"
+      ]
+    }`
+
+<br>
+<hr>
+<br>
+
+**Create Product**
+----
+  Create new product into inventory
+
+* **URL**
+
+  /projects
 
 * **Method:**
 
   `POST`
   
 *  **URL Params**
-    `:projectid` : integer (required)
+    None
 
 * **Header Params**<br>
    `access_token`: string (required)
 
 * **Body/Form Params**<br>
   **Required**
-  - `title` : string
+  - `name` : string
+  - `description`: string
+  - `category[otc, otc_limited, prescription, herbal]`: string
+  - `stock`: integer
+  - `price`: integer
+
+  **Optional**
+  - `image_url`: string
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+  * **Code:** 201 <br />
     **Content:** <br>
     `{
-     {
-        "id": 7,
-        "title": "petik tomat",
-        "category": "pending",
-        "ProjectId": 2,
-        "updatedAt": "2020-03-31T16:04:24.344Z",
-        "createdAt": "2020-03-31T16:04:24.344Z"
-    }
-}`
+        "id": 1,
+        "name": "Actifed 100ml",
+        "description": "Bromhexine HCl 100mg",
+        "category": "otc_limited",
+        "image_url": "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174111/OBT_tpvdcj.png",
+        "price": 70000,
+        "stock": 5000,
+        "createdAt": "2020-04-13T15:13:38.500Z",
+        "updatedAt": "2020-04-13T15:13:38.500Z"
+    }`
  
 * **Error Responses:**
   * **Code:** 400 VALIDATION ERROR <br />
     **Content:** <br>
     `{
       "errors": [
-        "TITLE MUST BE FILLED"
+        'NAME REQUIRED'
       ]   
     }`
-
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+    **OR**
+    `{
+      "errors": [
+        'PLEASE ENTER VALID DRUG CATEGORY'
+      ]   
+    }`
+    **OR**
+    `{
+      "errors": [
+        'PRICE MUST BE NON-NEGATIVE'
+      ]   
+    }`
+    **OR**
+    `{
+      "errors": [
+        'STOCK MUST BE NON-NEGATIVE'
+      ]   
+    }
+  * **Code:** 401 UNAUTHORIZED<br />
     **Content:** <br>
     `{
       "errors": [
@@ -731,97 +756,116 @@
       ]
     }`
 
-  * **Code:** 404 NOT FOUND <br />
-    **Content:** <br>
-    `{
-    "message": "NOT FOUND"
-    }`
-
 <br>
 <hr>
 <br>
 
-**Update Task**
+**Update Product**
 ----
-  Update task entry by ID, corresponding to a project's ID
+  Update product by id
 
 * **URL**
 
-  /projects/:projectid/tasks/:taskid
+  /products/:id
 
 * **Method:**
 
   `PUT`
   
 *  **URL Params**
-  -  `:projectid [integer]`
-  -  `:taskid [integer]`
+  -  `:id` integer
 
 * **Header Params**<br>
    `access_token`: string (required)
 
 * **Body/Form Params**<br>
   **Required**
-  - `title` : string
-  - `category` : string
+  - `name` : string
+  - `description`: string
+  - `category[otc, otc_limited, prescription, herbal]`: string
+  - `stock`: integer
+  - `price`: integer
+
+  **Optional**
+  - `image_url`: string
 
 * **Success Response:**
 
   * **Code:** 200 <br />
     **Content:** <br>
     `{
-     {
-        "id": 7,
-        "title": "Eureka",
-        "category": "done",
-        "due_date": "2020-08-08T00:00:00.000Z",
-        "ProjectId": 2,
-        "updatedAt": "2020-03-31T16:04:24.344Z",
-        "createdAt": "2020-03-31T16:04:24.344Z"
-    }
-}`
+        "id": 1,
+        "name": "Actifed 100ml",
+        "description": "Bromhexine HCl 100mg",
+        "category": "otc_limited",
+        "image_url": "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174111/OBT_tpvdcj.png",
+        "price": 70000,
+        "stock": 5000,
+        "createdAt": "2020-04-13T15:13:38.500Z",
+        "updatedAt": "2020-04-13T15:13:38.500Z"
+    }`
  
 * **Error Responses:**
   * **Code:** 400 VALIDATION ERROR <br />
     **Content:** <br>
     `{
       "errors": [
-        "TITLE MUST BE FILLED"
+        'NAME REQUIRED'
       ]   
     }`
+    **OR**
+    `{
+      "errors": [
+        'PLEASE ENTER VALID DRUG CATEGORY'
+      ]   
+    }`
+    **OR**
+    `{
+      "errors": [
+        'PRICE MUST BE NON-NEGATIVE'
+      ]   
+    }`
+    **OR**
+    `{
+      "errors": [
+        'STOCK MUST BE NON-NEGATIVE'
+      ]   
+    }
 
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+  * **Code:** 401 UNAUTHORIZED<br />
     **Content:** <br>
     `{
       "errors": [
           "jwt expired"
       ]
     }`
-
   * **Code:** 404 NOT FOUND <br />
     **Content:** <br>
     `{
-    "message": "NOT FOUND"
+      "errors": [
+          "NOT FOUND"
+      ]
     }`
+
+
 <br>
 <hr>
 <br>
 
-**Delete Task**
+**Delete Product**
 ----
-  Delete to-do entry by Id.
+  Delete product by id.
 
 * **URL**
 
-  /projects/:projectid/tasks/:taskid
+  /products/:id
 
 * **Method:**
 
-  `DELETE`
+  `PUT`
   
 *  **URL Params**
-  -  `:projectid [integer]`
-  -  `:taskid [integer]`
+  -  `:id` integer
 
 * **Header Params**<br>
    `access_token`: string (required)
@@ -834,15 +878,24 @@
   * **Code:** 200 <br />
     **Content:** `{
      "{
-      "message": "TASK DROPPED FROM PROJECT"
+      "message": "PRODUCT DROPPED FROM INVENTORY"
     }"
 }`
  
 * **Error Responses:**
+ * **Code:** 401 UNAUTHORIZED<br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
   * **Code:** 404 NOT FOUND <br />
     **Content:** <br>
     `{
-    "message": "NOT FOUND"
+      "errors": [
+          "NOT FOUND"
+      ]
     }`
 <br>
 <hr>
