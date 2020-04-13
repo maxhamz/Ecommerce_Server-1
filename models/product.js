@@ -1,5 +1,4 @@
 'use strict';
-const {defaultPic} = require('../helpers/defaultPic')
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.Sequelize.Model
   class Product extends Model {}
@@ -66,16 +65,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Product',
-    hooks: {
-      beforeCreate: (instance, options) => {
-        instance.image_url = defaultPic(instance.category)
-      },
-
-      beforeUpdate: (instance, options) => {
-        instance.image_url = defaultPic(instance.category)
-      }
-    }
+    modelName: 'Product'
   });
   Product.associate = function(models) {
     // associations can be defined here

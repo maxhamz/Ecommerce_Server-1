@@ -1,0 +1,51 @@
+const app = require('../app.js')
+const {
+    User, Product
+} = require('../models')
+const request = require('supertest')
+const testUser = {
+    email: 'test@mail.com',
+    password: 'xixixi',
+    role: 'admin'
+}
+const testInput = {
+    name: 'Panadol',
+    description: 'paracetamol 20mg',
+    category: 'otc',
+    image_url: 'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1539174094/OBAT_BEBAS_FIX_uphnzj.png',
+    price: 5000,
+    stock: 5000
+}
+let wrongInput = {}
+let errors = []
+let payload = {}
+let testToken
+
+// BEFORE ALL BEGIN: LOGIN TEST USER
+beforeAll((done) => {
+    console.log(">>> REGISTERING & LOGIN SAMPLE USERS FOR PRODUCT.TEST");
+    /*
+        REGISTER TEST USER & LOGIN TEST USER CREDENTIALS 
+     */
+    request(app)
+        .post('/users/login')
+        .send(testUser)
+        .end((req, res) => {
+            console.log("RES BODY IS");
+            console.log(res.body);
+            done()
+        })
+})
+
+
+// AFTER ALL: DELETE USER CREDS
+afterAll((done) => {
+    User.destroy({
+        where: {
+            email: testUser.email
+        }
+    })
+    .then(_ => {
+        done()
+    })
+})

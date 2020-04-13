@@ -1,7 +1,7 @@
 const { Sequelize } = require('../models')
 
 module.exports = (err, req, res, next) => {
-    console.log("MASUK ERROR HANDLER --->");
+    // console.log("MASUK ERROR HANDLER --->");
     // console.log(err);
 
     if(err instanceof Sequelize.ValidationError) {

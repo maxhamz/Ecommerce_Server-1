@@ -93,7 +93,7 @@ describe('User service', () => {
                         if (error) {
                             return done(error)
                         } else {
-                            console.log(response.body);
+                            // console.log(response.body);
                             expect(response.status).toBe(400)
                             expect(response.body).toHaveProperty('errors', errors)
 
