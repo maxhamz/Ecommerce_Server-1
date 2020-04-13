@@ -10,8 +10,18 @@ class UserController {
     static register(req, res, next) {
         // console.log(">>> CONTROLLERS - USER - REGISTER");
         // console.log(req.body);
+        let defRole
         const {email, password, role} = req.body
-        return User.create({email, password, role})
+        if(!role) {
+            defRole = 'user'
+        } else {
+            defRole = role
+        }
+        return User.create({
+            email: email,
+            password: password, 
+            role: defRole
+        })
             .then(response => {
                 // console.log("USER CREATED");
                 payload = {
@@ -57,6 +67,18 @@ class UserController {
         .catch(err => {
             return next(err)
         })
+    }
+
+    static fetchAll(req, res, next) {
+        console.log("FETCHING ALL");
+        User.findAll()
+            .then(response => {
+                console.log("ALL USERS FETCHED");
+                res.status(200).json({data: response})
+            })
+            .catch(err => {
+                next(err)
+            })
     }
 
 }
