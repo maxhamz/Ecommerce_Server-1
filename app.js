@@ -1,3 +1,16 @@
+const env = process.env.NODE_ENV 
+console.log(process.env.NODE_ENV +  "INI ENV SKRG!")
+switch (env) {
+  case 'development':
+    require('dotenv').config({path: process.cwd() + '/.env'});
+      break;
+  case 'test':
+    console.log("MASUK INI TEST");
+    require('dotenv').config({path: process.cwd() + '/.env.test'});
+      break;
+}
+
+
 const express = require("express");
 const app = express();
 // app.io = require('socket.io');
