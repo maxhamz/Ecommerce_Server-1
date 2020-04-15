@@ -1,7 +1,10 @@
 const {Product} = require('../models')
 const {customError} = require('../helpers/customError')
 const {defaultPic} = require('../helpers/defaultPic')
+const {post2Imgur} = require('../helpers/imgur')
 let pic
+let imgurd
+
 class ProductController {
 
     static createProduct(req, res, next) {
@@ -16,6 +19,8 @@ class ProductController {
             pic = image_url
         }
 
+        // imgurd = post2Imgur(pic)
+
         return Product.create({
             name: name,
             description: description,
@@ -27,7 +32,8 @@ class ProductController {
         .then(response => {
             // console.log("PRODUCT ADDED TO INVENTORY");
             // console.log(response);
-            return res.status(201).json(response)
+            res.status(201).json(response)
+            post2Imgur(response.image_url)
         })
         .catch(err => {
             return next(err)
@@ -94,6 +100,8 @@ class ProductController {
                 } else {
                     pic = image_url
                 }
+
+                // imgurd = post2Imgur(pic)
         
                 return Product.update({
                     name: name,
@@ -113,7 +121,8 @@ class ProductController {
         })
         .then(response => {
             // console.log("PRODUCT UPDATED");
-            return res.status(200).json(response[1][0])
+            res.status(200).json(response[1][0])
+            post2Imgur(response[1][0].image_url)
         })
         .catch(err => {
             return next(err)
