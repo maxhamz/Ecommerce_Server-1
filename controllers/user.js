@@ -56,7 +56,11 @@ class UserController {
                         email: response.email,
                         role: response.role
                     })
-                    res.status(200).json({access_token: token})
+                    res.status(200).json({
+                        access_token: token,
+                        id: response.id,
+                        email: response.email
+                    })
                 } else {
                     throw new customError(400, 'WRONG PASSWORD/EMAIL')
                 }
