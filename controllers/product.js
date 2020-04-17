@@ -1,6 +1,7 @@
 const {Product} = require('../models')
 const {customError} = require('../helpers/customError')
 const {defaultPic} = require('../helpers/defaultPic')
+const d2 = require('../')
 let pic
 class ProductController {
 
@@ -8,7 +9,7 @@ class ProductController {
 
         // console.log(">>> CONTROLLERS: CREATE PRODUCT");
         const {name, description, category, image_url, price, stock} = req.body
-        // console.log(req.body);
+        console.log(req.body.image_url);
 
         if(!image_url) {
             pic = defaultPic(category)
@@ -16,22 +17,27 @@ class ProductController {
             pic = image_url
         }
 
-        return Product.create({
-            name: name,
-            description: description,
-            category: category,
-            image_url: pic,
-            price: price,
-            stock: stock
-        })
-        .then(response => {
-            // console.log("PRODUCT ADDED TO INVENTORY");
-            // console.log(response);
-            return res.status(201).json(response)
-        })
-        .catch(err => {
-            return next(err)
-        })
+        /* 
+            panggil imgur
+            post2
+        */
+
+        // return Product.create({
+        //     name: name,
+        //     description: description,
+        //     category: category,
+        //     image_url: pic,
+        //     price: price,
+        //     stock: stock
+        // })
+        // .then(response => {
+        //     // console.log("PRODUCT ADDED TO INVENTORY");
+        //     // console.log(response);
+        //     return res.status(201).json(response)
+        // })
+        // .catch(err => {
+        //     return next(err)
+        // })
 
     }
 

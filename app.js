@@ -17,15 +17,17 @@ const app = express();
 app.io = require('socket.io')();
 
 const morgan = require('morgan');
+const formidable = require('express-formidable');
 const cors = require('cors');
 const routes = require('./routes/index.js')(app.io);
 const errorHandler = require('./middleware/errorHandler.js');
 
 app.use(cors());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
-
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+app.use(formidable());
+
 // app.use( routes)(app.io);
 app.use(routes)
 app.use(errorHandler);

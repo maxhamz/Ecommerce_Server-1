@@ -1,0 +1,46 @@
+const fetch = require("node-fetch");
+global.Headers = fetch.Headers;
+const FormData = require('form-data')
+
+var myHeaders = new Headers();
+myHeaders.append("Authorization", "Client-ID 390277fdd42f174");
+
+let formdata = new FormData()
+formdata.append("image", "https://pbs.twimg.com/profile_images/679852624754028544/Inq6KagO_reasonably_small.jpg");
+
+let testurl = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQK4P7efBn2n7XPAW9pJQdS6A43h2yvuIboxjZ9fVbEOIwxCS23tuj2gDFlfLh6eIQZGHJ0o2g&usqp=CAc"
+let d
+let d1
+let d2
+let url = ''
+
+var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
+  };
+  
+  d2 = fetch("https://api.imgur.com/3/image", requestOptions)
+  .then(response => response.text())
+  .then(result => {
+      console.log("FROM IMGUR");
+      console.log(result);
+      d = JSON.parse(result)
+      console.log("hello");
+      console.log(d);
+      d1 = d.data.link
+      return d1
+    })
+  .catch(error => console.log('error', error));
+
+console.log("result is");
+// console.log(d1);
+// console.log("final");
+// console.log(d2);
+d2.then(data => {
+    console.log(data,'==========================================================');
+    
+})
+
+module.exports = d2
