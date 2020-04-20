@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const userRoutes = require('./user')
 const productRoutes = require('./product')
+const cartRoutes = require('./cart')
+const orderRoutes = require('./order')
 
 router.get('/', (req, res, next) => {
     res.json({message: 'test'})
@@ -8,6 +10,8 @@ router.get('/', (req, res, next) => {
 
 router.use('/users', userRoutes)
 router.use('/products', productRoutes)
+router.use('/carts', cartRoutes)
+router.use('/orders', orderRoutes)
 
 module.exports = function(io) {
 
