@@ -2,7 +2,8 @@ const {
     Cart,
     Order,
     User,
-    Product
+    Product,
+    sequelize
 } = require('../models')
 const {
     customError
@@ -37,28 +38,22 @@ class CartController {
             .then(response => {
                 console.log("CART IS");
 
-                // console.log(response);
+                console.log(response);
                 if (response) {
-                    cart = response.dataValues
-                    console.log("HAVE CART ALREADY!");
+                    cart = response
+                    console.log("HAVE CART ALREADY! LET'S ADD QUANTITY INSTEAD");
                     // let disthrow =  new customError(400, "ACTIVE CART EXISTED. TRY TO UPDATE INSTEAD.")
                     // // next({status: 400, message: "CART EXISTED. TRY TO UPDATE INSTEAD."})
                     // next(disthrow)
-                    if (cart) {
-                        return Cart.update({
+                   return Cart.update({
                             total_qty: sequelize.literal('total_qty + 1')
                         }, {
                             where: {
                                 id: cart.id
                             },
-                            include: ['Product', 'User'],
+                            // include: ['Product', 'User'],
                             returning: true
                         })
-                    } else {
-                        throw new customError(404, 'NOT FOUND')
-                    }
-
-
                 } else {
                     console.log("NOT YET! LET'S CREATE NEW ONE");
                     return Cart.create(inputParams)
@@ -108,7 +103,7 @@ class CartController {
                     UserId: req.decoded.id
                 },
                 order: [
-                    ['updatedAt', 'DESC']
+                    ['createdAt', 'DESC']
                 ],
                 include: ['Product', 'User']
             })
@@ -383,7 +378,7 @@ class CartController {
                 ordersCreated = responses
                 return Cart.destroy({
                     where: {
-                        id: req.decoded.id
+                        UserId: req.decoded.id
                     }
                 })
 
