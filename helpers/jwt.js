@@ -6,7 +6,7 @@ function createToken(payload) {
     // return jwt.sign(payload, "rahasiadong", { expiresIn: '1h' })
 
     //FOR DEVELOPMENT
-    return jwt.sign(payload, process.env.SECRET, { expiresIn: '1h' })
+    return jwt.sign(payload, process.env.SECRET, { expiresIn: '60m' })
 }
 
 function checkToken(payload) {

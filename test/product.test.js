@@ -130,7 +130,6 @@ describe('Product services', () => {
                 errors = [
                     'NAME REQUIRED',
                     'PLEASE ENTER VALID DRUG CATEGORY',
-                    // 'Product.image_url cannot be null',
                     'PRICE MUST BE NON-NEGATIVE',
                     'STOCK MUST BE NON-NEGATIVE'
                 ]

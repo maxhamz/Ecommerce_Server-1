@@ -7,7 +7,7 @@ class ProductController {
 
     static createProduct(req, res, next) {
 
-        console.log(">>> CONTROLLERS: CREATE PRODUCT");
+        // console.log(">>> CONTROLLERS: CREATE PRODUCT");
         const {name, description, category, image_url, price, stock} = req.body
         console.log(req.body);
         // console.log(req.body);
@@ -25,7 +25,7 @@ class ProductController {
                 console.log("WHASSAP BLIMPO?");
                 console.log(response);
 
-                if(!(response instanceof Error)) {
+                if(response) {
                     return Product.create({
                         name: name,
                         description: description,
@@ -35,7 +35,14 @@ class ProductController {
                         stock: stock
                     })
                 } else {
-                    throw new customError(400, 'IMAGE UPLOAD FAILED')
+                    return Product.create({
+                        name: name,
+                        description: description,
+                        category: category,
+                        image_url: defaultPic(category),
+                        price: price,
+                        stock: stock
+                    })
                 }
 
                 
