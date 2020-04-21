@@ -2,6 +2,7 @@ const {Product} = require('../models')
 const {customError} = require('../helpers/customError')
 const {defaultPic} = require('../helpers/defaultPic')
 const {post2Imgur} = require('../helpers/tesimgur')
+let fs = require('fs')
 let pic
 class ProductController {
 
@@ -49,6 +50,77 @@ class ProductController {
             })
             .then(response => {
                 // console.log("PRODUCT ADDED TO INVENTORY");
+                // console.log(response);
+                return res.status(201).json(response)
+            })
+            .catch(err => {
+                return next(err)
+            })
+
+    }
+
+
+    static createProduct2 (req, res, next) {
+
+        console.log(">>> CONTROLLERS: CREATE PRODUCT mMULTER");
+        console.log("REQ BODY IS");
+        console.log(req.body);
+        console.log("REQ FILES IS");
+        console.log(req.file);
+        const imgSrc = req.file.path
+
+        console.log("THE UPLOADED PATH IS");
+        console.log(imgSrc);
+
+        // TO UPLOAD 2 IMGUR, NEED TO CONVERT TO BASE-64 STRING FIRST
+        let b64d = fs.readFileSync(imgSrc)
+
+        console.log("WHO IS B64 VERSION?");
+        console.log(b64d);
+        console.log('\n\n\n');
+
+        // IMGUR TEST
+
+
+        const {name, description, category, price, stock} = req.body
+        
+
+
+        // if(!imgSrc) {
+        //     pic = defaultPic(category)
+        // } else {
+        //     pic = b64d
+        // }
+
+        return post2Imgur(b64d)
+            .then(response => {
+                console.log("WHASSAP BLIMPO?");
+                console.log(response);
+
+                if(response) {
+                    return Product.create({
+                        name: name,
+                        description: description,
+                        category: category,
+                        image_url: response,
+                        price: price,
+                        stock: stock
+                    })
+                } else {
+                    return Product.create({
+                        name: name,
+                        description: description,
+                        category: category,
+                        image_url: defaultPic(category),
+                        price: price,
+                        stock: stock
+                    })
+                }
+
+                
+            })
+            .then(response => {
+                console.log("PRODUCT ADDED TO INVENTORY");
                 // console.log(response);
                 return res.status(201).json(response)
             })

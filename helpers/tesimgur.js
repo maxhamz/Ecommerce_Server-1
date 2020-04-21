@@ -1,6 +1,13 @@
 const fetch = require('node-fetch')
 global.Headers = fetch.Headers;
 const FormData = require('form-data')
+// let fs = require('fs')
+// let sampleURL = '../photos/2020-04-21T09:12:18.641Z_obat_keras.png'
+
+// const b4 = fs.readFileSync(sampleURL, 'base64')
+
+// let sampleURL = "photos/2020-04-21T08:48:32.463Z_obat_keras.png"
+// let sampleURL = "2020-04-21T08:48:32.463Z_obat_keras.png"
 // let sampleURL = "https://pbs.twimg.com/profile_images/679852624754028544/Inq6KagO_reasonably_small.jpg"
 // const {customError} = require('./customError')
 
@@ -20,7 +27,12 @@ async function post2Imgur(baseURL) {
 
     var formdata = new FormData();
     formdata.append("image", baseURL);
-
+    if(baseURL instanceof String) {
+        formdata.append("type", "URL");
+    } else {
+        formdata.append("type", "file");
+    }
+    
 
     var requestOptions = {
         method: 'POST',
