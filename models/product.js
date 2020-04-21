@@ -32,8 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     image_url: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING
     },
     price: {
       type: DataTypes.INTEGER,

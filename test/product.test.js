@@ -123,12 +123,14 @@ describe('Product services', () => {
                     name: null,
                     description: 'adadeh',
                     category: 'narkoba',
-                    image_url: 'mirasantika',
+                    image_url: '',
                     price: -2000,
                     stock: -2000
                 }
-                errors = ['NAME REQUIRED',
+                errors = [
+                    'NAME REQUIRED',
                     'PLEASE ENTER VALID DRUG CATEGORY',
+                    // 'Product.image_url cannot be null',
                     'PRICE MUST BE NON-NEGATIVE',
                     'STOCK MUST BE NON-NEGATIVE'
                 ]
@@ -144,7 +146,7 @@ describe('Product services', () => {
                         } else {
 
                             // console.log(response.status);
-                            // console.log(response.body);
+                            // console.log(response.body.errors);
 
                             expect(response.status).toBe(400)
                             expect(response.body).toHaveProperty('errors', errors)

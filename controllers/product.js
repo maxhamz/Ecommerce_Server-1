@@ -7,9 +7,9 @@ class ProductController {
 
     static createProduct(req, res, next) {
 
-        // console.log(">>> CONTROLLERS: CREATE PRODUCT");
+        console.log(">>> CONTROLLERS: CREATE PRODUCT");
         const {name, description, category, image_url, price, stock} = req.body
-        // console.log(req.body);
+        console.log(req.body);
         // console.log(req.body);
         // console.log(req.headers);
         // console.log(req.body);
@@ -22,8 +22,8 @@ class ProductController {
 
         return post2Imgur(pic)
             .then(response => {
-                // console.log("WHASSAP BLIMPO?");
-                // console.log(response);
+                console.log("WHASSAP BLIMPO?");
+                console.log(response);
 
                 if(!(response instanceof Error)) {
                     return Product.create({

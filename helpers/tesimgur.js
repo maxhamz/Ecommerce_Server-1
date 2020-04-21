@@ -34,7 +34,7 @@ async function post2Imgur(baseURL) {
         .then(response => response.text())
         .then(result => {
             console.log("OK, THIS IS IMGUR'S URL");
-            // console.log(result)
+            console.log(result)
             let d = JSON.parse(result)
             console.log(d.data.link);
             return d.data.link
