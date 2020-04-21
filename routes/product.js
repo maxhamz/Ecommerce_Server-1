@@ -40,9 +40,18 @@ const upload = multer({
     fileFilter: fileFilter
 }) 
 
+// // MULTER IMGUR SETTING
+// const ImgurStorage = require('multer-storage-imgur');
+// const upload       = multer({
+//     storage: ImgurStorage({ clientId: '390277fdd42f174' })
+//   })
+
+//PLAIN MULTER
+
 productRoutes.use(authentication)
 productRoutes.post('/', ProductController.createProduct)
 productRoutes.post('/multer', upload.single('imageSrc'), ProductController.createProduct2)
+// productRoutes.post('/multer', upload.single('imageSrc'), ProductController.createProduct3)
 productRoutes.get('/', ProductController.getAllProducts)
 productRoutes.get('/:id', ProductController.getOneProduct)
 productRoutes.put('/:id', authorization, ProductController.editProduct)
