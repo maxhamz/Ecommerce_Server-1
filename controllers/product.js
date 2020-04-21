@@ -1,7 +1,20 @@
-const {Product} = require('../models')
-const {customError} = require('../helpers/customError')
-const {defaultPic} = require('../helpers/defaultPic')
-const {post2Imgur} = require('../helpers/tesimgur')
+const {
+    Product
+} = require('../models')
+const {
+    customError
+} = require('../helpers/customError')
+const {
+    defaultPic
+} = require('../helpers/defaultPic')
+const {
+    post2Imgur
+} = require('../helpers/tesimgur')
+
+// NPM IMGUR
+var imgur = require('imgur');
+imgur.setClientId('390277fdd42f174');
+
 let fs = require('fs')
 let pic
 class ProductController {
@@ -9,13 +22,20 @@ class ProductController {
     static createProduct(req, res, next) {
 
         // console.log(">>> CONTROLLERS: CREATE PRODUCT");
-        const {name, description, category, image_url, price, stock} = req.body
+        const {
+            name,
+            description,
+            category,
+            image_url,
+            price,
+            stock
+        } = req.body
         console.log(req.body);
         // console.log(req.body);
         // console.log(req.headers);
         // console.log(req.body);
 
-        if(!image_url) {
+        if (!image_url) {
             pic = defaultPic(category)
         } else {
             pic = image_url
@@ -26,7 +46,7 @@ class ProductController {
                 console.log("WHASSAP BLIMPO?");
                 console.log(response);
 
-                if(response) {
+                if (response) {
                     return Product.create({
                         name: name,
                         description: description,
@@ -46,7 +66,7 @@ class ProductController {
                     })
                 }
 
-                
+
             })
             .then(response => {
                 // console.log("PRODUCT ADDED TO INVENTORY");
@@ -60,73 +80,112 @@ class ProductController {
     }
 
 
-    static createProduct2 (req, res, next) {
+    static createProduct2(req, res, next) {
 
         console.log(">>> CONTROLLERS: CREATE PRODUCT mMULTER");
         console.log("REQ BODY IS");
         console.log(req.body);
         console.log("REQ FILES IS");
         console.log(req.file);
-        const imgSrc = req.file.path
+        // const imgSrc = req.file.path
+        // // const imgSrc = req.file.filename
 
-        console.log("THE UPLOADED PATH IS");
-        console.log(imgSrc);
+        // //UPLOAD REGULAR FILE
+        // imgur.uploadFile(imgSrc)
+        //     .then(function (json) {
+        //         console.log(json.data);
+        //         console.log(json.data.link);
+        //     })
+        //     .catch(function (err) {
+        //         console.error(err.message);
+        //     });
+
+
+        // IMGUR USING B64
+        // console.log("THE UPLOADED PATH IS");
+        // console.log(imgSrc);
+        // console.log("\n\n");
+        console.log("BUFFER IS");
+        console.log(req.file.buffer);
 
         // TO UPLOAD 2 IMGUR, NEED TO CONVERT TO BASE-64 STRING FIRST
-        let b64d = fs.readFileSync(imgSrc)
-
         console.log("WHO IS B64 VERSION?");
-        console.log(b64d);
+        console.log("buffer is");
+
+        // let b64f = new Buffer(imgSrc).toString('base64')
+        let b64f = req.file.buffer.toString('base64')
+        // let b64f = req.file.buffer
+        // let imb = fs.readFileSync(imgSrc)
+
+        // console.log("SANITY CHECK FOR BINARY");
+        // console.log(imb);
+        // let b64d = req.file.buffer.toString('base64')
+
+
+        console.log(b64f);
         console.log('\n\n\n');
 
-        // IMGUR TEST
 
-
-        const {name, description, category, price, stock} = req.body
-        
-
-
-        // if(!imgSrc) {
-        //     pic = defaultPic(category)
-        // } else {
-        //     pic = b64d
-        // }
-
-        return post2Imgur(b64d)
-            .then(response => {
-                console.log("WHASSAP BLIMPO?");
-                console.log(response);
-
-                if(response) {
-                    return Product.create({
-                        name: name,
-                        description: description,
-                        category: category,
-                        image_url: response,
-                        price: price,
-                        stock: stock
-                    })
-                } else {
-                    return Product.create({
-                        name: name,
-                        description: description,
-                        category: category,
-                        image_url: defaultPic(category),
-                        price: price,
-                        stock: stock
-                    })
-                }
-
-                
+        //USING NPM IMGUR
+        imgur.uploadBase64(b64f)
+            .then(function (json) {
+                console.log(json.data.link);
             })
-            .then(response => {
-                console.log("PRODUCT ADDED TO INVENTORY");
-                // console.log(response);
-                return res.status(201).json(response)
-            })
-            .catch(err => {
-                return next(err)
-            })
+            .catch(function (err) {
+                console.error(err.message);
+            });
+
+        //END NPM IMGUT
+
+        // // IMGUR TEST
+
+
+        // const {name, description, category, price, stock} = req.body
+
+
+
+        // // if(!imgSrc) {
+        // //     pic = defaultPic(category)
+        // // } else {
+        // //     pic = b64d
+        // // }
+
+        // return post2Imgur(b64f)
+        // // return post2Imgur(imb)
+        //     .then(response => {
+        //         console.log("WHASSAP BLIMPO?");
+        //         console.log(response);
+
+        //         // if(response) {
+        //         //     return Product.create({
+        //         //         name: name,
+        //         //         description: description,
+        //         //         category: category,
+        //         //         image_url: response,
+        //         //         price: price,
+        //         //         stock: stock
+        //         //     })
+        //         // } else {
+        //         //     return Product.create({
+        //         //         name: name,
+        //         //         description: description,
+        //         //         category: category,
+        //         //         image_url: defaultPic(category),
+        //         //         price: price,
+        //         //         stock: stock
+        //         //     })
+        //         // }
+
+
+        //     })
+        // // //     .then(response => {
+        // // //         console.log("PRODUCT ADDED TO INVENTORY");
+        // // //         // console.log(response);
+        // // //         return res.status(201).json(response)
+        // // //     })
+        //     .catch(err => {
+        //         return next(err)
+        //     })
 
     }
 
@@ -138,7 +197,9 @@ class ProductController {
             .then(response => {
                 // console.log("FETCHED ALL PRODUCTS");
                 // console.log(response);
-                return res.status(200).json({data: response})
+                return res.status(200).json({
+                    data: response
+                })
             })
             .catch(err => {
                 return next(err)
@@ -152,14 +213,14 @@ class ProductController {
         return Product.findByPk(Number(req.params.id))
             .then(response => {
 
-                if(response) {
+                if (response) {
                     // console.log("PRODUCT FOUND");
                     // console.log(response.dataValues);
                     return res.status(200).json(response)
                 } else {
                     throw new customError(404, 'NOT FOUND')
                 }
-                
+
             })
             .catch(err => {
                 return next(err)
@@ -173,42 +234,49 @@ class ProductController {
         // console.log(req.body);
         // console.log(req.params.id);
 
-        const {name, description, category, image_url, price, stock} = req.body
+        const {
+            name,
+            description,
+            category,
+            image_url,
+            price,
+            stock
+        } = req.body
 
         return Product.findOne({
-            where: {
-                id: Number(req.params.id)
-            }
-        })
-        .then(response => {
-            if(response) {
-                // console.log("PRODUCT FOUND");
-
-                if(!image_url) {
-                    pic = defaultPic(category)
-                } else {
-                    pic = image_url
+                where: {
+                    id: Number(req.params.id)
                 }
+            })
+            .then(response => {
+                if (response) {
+                    // console.log("PRODUCT FOUND");
 
-                let imguregex = /imgur/gi
-                let imgurd = pic.match(imguregex)
+                    if (!image_url) {
+                        pic = defaultPic(category)
+                    } else {
+                        pic = image_url
+                    }
 
-                console.log(imgurd);
+                    let imguregex = /imgur/gi
+                    let imgurd = pic.match(imguregex)
 
-                if(!imgurd) {
-                    return post2Imgur(pic)
-                } else {
-                    return pic
+                    console.log(imgurd);
+
+                    if (!imgurd) {
+                        return post2Imgur(pic)
+                    } else {
+                        return pic
+                    }
+
+
                 }
-                
-    
-            }
-        })
-        .then(response => {
+            })
+            .then(response => {
                 // console.log("WHASSAP BLIMPO?");
                 // console.log(response);
 
-                if(!(response instanceof Error)) {
+                if (!(response instanceof Error)) {
                     return Product.update({
                         name: name,
                         description: description,
@@ -226,15 +294,15 @@ class ProductController {
                     throw new customError(400, 'IMAGE UPLOAD FAILED')
                 }
 
-                
+
             })
-        .then(response => {
-            // console.log("PRODUCT UPDATED");
-            return res.status(200).json(response[1][0])
-        })
-        .catch(err => {
-            return next(err)
-        })
+            .then(response => {
+                // console.log("PRODUCT UPDATED");
+                return res.status(200).json(response[1][0])
+            })
+            .catch(err => {
+                return next(err)
+            })
 
     }
 
@@ -243,31 +311,33 @@ class ProductController {
         // console.log(">>> DELETING PRODUCT");
         // console.log(req.params.id);
         return Product.findOne({
-            where: {
-                id: Number(req.params.id)
-            }
-        })
-        .then(response => {
-            // console.log("WHAT'S RESPONSE?");
-            // console.log(response);
-            if(response) {
-                // console.log("PRODUCT FOUND");
-                return Product.destroy({
-                    where: {
-                        id: response.id
-                    }
-                })
+                where: {
+                    id: Number(req.params.id)
+                }
+            })
+            .then(response => {
+                // console.log("WHAT'S RESPONSE?");
+                // console.log(response);
+                if (response) {
+                    // console.log("PRODUCT FOUND");
+                    return Product.destroy({
+                        where: {
+                            id: response.id
+                        }
+                    })
 
-            } else {
-                throw new customError(404, 'NOT FOUND')
-            }
-        })
-        .then(_ => {
-            return res.status(200).json({message: 'PRODUCT DROPPED FROM INVENTORY'})
-        })
-        .catch(err => {
-            return next(err)
-        })
+                } else {
+                    throw new customError(404, 'NOT FOUND')
+                }
+            })
+            .then(_ => {
+                return res.status(200).json({
+                    message: 'PRODUCT DROPPED FROM INVENTORY'
+                })
+            })
+            .catch(err => {
+                return next(err)
+            })
 
     }
 

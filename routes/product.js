@@ -5,6 +5,7 @@ const {authorization} = require('../middleware/authorization')
 
 // MULTER SETTINGS
 const multer = require('multer')
+// var storage = multer.memoryStorage()
 const storage = multer.diskStorage({
     destination: (req, file, cbDest) => {
         cbDest(null, 'photos/')
@@ -31,14 +32,17 @@ const fileFilter = (req, file, cbFilter)  => {
 
 }
 
-const upload = multer({
-    storage: storage, 
-    limits: {
-        // LIMITS FILE SIZE TO 10 MB
-        fileSize: 1024 * 1024 * 10
-    },
-    fileFilter: fileFilter
-}) 
+// const upload = multer({
+//     // storage: storage, 
+//     dest: 'uploads/',
+//     limits: {
+//         // LIMITS FILE SIZE TO 10 MB
+//         fileSize: 1024 * 1024 * 10
+//     }
+//     // ,
+//     // fileFilter: fileFilter
+// }) 
+const upload = multer({})
 
 productRoutes.use(authentication)
 productRoutes.post('/', ProductController.createProduct)
