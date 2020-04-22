@@ -170,13 +170,13 @@ https://ecommerce-server-2.herokuapp.com/
 -----------
 <hr>
 
-**Fetch Projects**
+**Get All Carts**
 ----
-  Returns a list of all projects where currently logged in user is involved.
+  Returns all carts based on UserId
 
 * **URL**
 
-  /projects/
+  /carts
 
 * **Method:**
 
@@ -184,86 +184,6 @@ https://ecommerce-server-2.herokuapp.com/
   
 *  **URL Params**
     None
-
-* **Body/Form Params**<br>
-   None
-
-* **Header Params**<br>
-   `access_token`: string (required)
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-    <br>
-    `{
-     [
-        {
-            "ProjectId": 2,
-            "UserId": 1,
-            "createdAt": "2020-03-30T15:24:12.209Z",
-            "updatedAt": "2020-03-30T15:24:12.209Z",
-            "Project": {
-                "id": 2,
-                "UserId": 1,
-                "title": "liwetan"
-            },
-            "User": {
-                "id": 1,
-                "email": "user@mail.com",
-                "location": "-6.1741;106.8296"
-            }
-        }
-    ]
-}`
- 
-* **Error Responses:**
-
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
-    **Content:** <br>
-    `{
-      "errors": [
-          "jwt expired"
-      ]
-    }`
-
-
-  * **Code:** 404 NOT FOUND <br />
-    **Content:** 
-    <br>
-    `{
-    "message": [
-        "NOT FOUND"
-    ]
-    }`
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** 
-    <br>
-    `{
-    "message": [
-        "INTERNAL SERVER ERROR"
-    ]
-    }`
-
-<br>
-<hr>
-<br>
-
-**Get Project By Id**
-----
-  Returns a project based on ID
-
-* **URL**
-
-  /projects/:id
-
-* **Method:**
-
-  `GET`
-  
-*  **URL Params**
-    `:id` : integer(required)
 
 * **Header Params**<br>
    `access_token`: string (required)
@@ -276,22 +196,59 @@ https://ecommerce-server-2.herokuapp.com/
   * **Code:** 200 <br />
     **Content:** <br>
    `{
-     [
+    "response": [
         {
-            "id": 4,
-            "title": "khatam quran",
-            "description": "surah yasin",
-            "status": "pending",
-            "due_date": "2020-07-31T00:00:00.000Z",
-            "ProjectId": 2,
-            "createdAt": "2020-04-03T13:44:00.332Z",
-            "updatedAt": "2020-04-03T13:44:00.332Z",
-            "Project": {
-                "id": 2,
-                "UserId": 1,
-                "title": "tahlilan",
-                "createdAt": "2020-04-03T13:36:38.711Z",
-                "updatedAt": "2020-04-03T15:17:09.120Z"
+            "id": 2,
+            "UserId": 4,
+            "ProductId": 5,
+            "total_qty": 5,
+            "createdAt": "2020-04-21T13:32:28.708Z",
+            "updatedAt": "2020-04-21T13:32:32.352Z",
+            "Product": {
+                "id": 5,
+                "name": "Vitacimin 1 strip @ tablet",
+                "description": "Ascorbic Acid 500mg",
+                "category": "otc",
+                "image_url": "https://i.imgur.com/gqiwTiz.jpg",
+                "price": 2000,
+                "stock": 5000,
+                "createdAt": "2020-04-21T05:00:42.035Z",
+                "updatedAt": "2020-04-21T05:00:42.035Z"
+            },
+            "User": {
+                "id": 4,
+                "email": "buyer@mail.com",
+                "password": "$2a$10$M37SaolpK59stQo.nzgmPufZl7HCVaKHg7JobB6oZ4wXwAuC/a/yq",
+                "role": "user",
+                "createdAt": "2020-04-21T13:29:27.599Z",
+                "updatedAt": "2020-04-21T13:29:27.599Z"
+            }
+        },
+        {
+            "id": 1,
+            "UserId": 4,
+            "ProductId": 4,
+            "total_qty": 5,
+            "createdAt": "2020-04-21T13:32:20.750Z",
+            "updatedAt": "2020-04-21T13:32:24.632Z",
+            "Product": {
+                "id": 4,
+                "name": "Fucithalmic 10mg",
+                "description": "Fusidic acid 1%",
+                "category": "prescription",
+                "image_url": "https://cdn-image.hipwee.com/wp-content/uploads/2017/09/hipwee-9888267_20170906021736.png",
+                "price": 30000,
+                "stock": 5000,
+                "createdAt": "2020-04-21T04:59:43.075Z",
+                "updatedAt": "2020-04-21T04:59:43.075Z"
+            },
+            "User": {
+                "id": 4,
+                "email": "buyer@mail.com",
+                "password": "$2a$10$M37SaolpK59stQo.nzgmPufZl7HCVaKHg7JobB6oZ4wXwAuC/a/yq",
+                "role": "user",
+                "createdAt": "2020-04-21T13:29:27.599Z",
+                "updatedAt": "2020-04-21T13:29:27.599Z"
             }
         }
     ]
@@ -299,7 +256,7 @@ https://ecommerce-server-2.herokuapp.com/
  
 * **Error Responses:**
 
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+  * **Code:** 401 UNAUTHORIZED <br />
     **Content:** <br>
     `{
       "errors": [
@@ -318,9 +275,115 @@ https://ecommerce-server-2.herokuapp.com/
 <hr>
 <br>
 
-**Create Project**
+**Get All Orders**
 ----
-  Create project. Current user will automatically be project owner
+  Returns all orders/checkedout carts based on UserId
+
+* **URL**
+
+  /carts/orders
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+    None
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+   None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br>
+   `{
+    "response": [
+        {
+            "id": 2,
+            "UserId": 4,
+            "ProductId": 5,
+            "total_qty": 5,
+            "createdAt": "2020-04-21T13:32:28.708Z",
+            "updatedAt": "2020-04-21T13:32:32.352Z",
+            "Product": {
+                "id": 5,
+                "name": "Vitacimin 1 strip @ tablet",
+                "description": "Ascorbic Acid 500mg",
+                "category": "otc",
+                "image_url": "https://i.imgur.com/gqiwTiz.jpg",
+                "price": 2000,
+                "stock": 5000,
+                "createdAt": "2020-04-21T05:00:42.035Z",
+                "updatedAt": "2020-04-21T05:00:42.035Z"
+            },
+            "User": {
+                "id": 4,
+                "email": "buyer@mail.com",
+                "password": "$2a$10$M37SaolpK59stQo.nzgmPufZl7HCVaKHg7JobB6oZ4wXwAuC/a/yq",
+                "role": "user",
+                "createdAt": "2020-04-21T13:29:27.599Z",
+                "updatedAt": "2020-04-21T13:29:27.599Z"
+            }
+        },
+        {
+            "id": 1,
+            "UserId": 4,
+            "ProductId": 4,
+            "total_qty": 5,
+            "createdAt": "2020-04-21T13:32:20.750Z",
+            "updatedAt": "2020-04-21T13:32:24.632Z",
+            "Product": {
+                "id": 4,
+                "name": "Fucithalmic 10mg",
+                "description": "Fusidic acid 1%",
+                "category": "prescription",
+                "image_url": "https://cdn-image.hipwee.com/wp-content/uploads/2017/09/hipwee-9888267_20170906021736.png",
+                "price": 30000,
+                "stock": 5000,
+                "createdAt": "2020-04-21T04:59:43.075Z",
+                "updatedAt": "2020-04-21T04:59:43.075Z"
+            },
+            "User": {
+                "id": 4,
+                "email": "buyer@mail.com",
+                "password": "$2a$10$M37SaolpK59stQo.nzgmPufZl7HCVaKHg7JobB6oZ4wXwAuC/a/yq",
+                "role": "user",
+                "createdAt": "2020-04-21T13:29:27.599Z",
+                "updatedAt": "2020-04-21T13:29:27.599Z"
+            }
+        }
+    ]
+}`
+ 
+* **Error Responses:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+
+<br>
+<hr>
+<br>
+
+
+**Create Cart**
+----
+  Add item to cart. Increase quantity if cart already created
 
 * **URL**
 
@@ -337,45 +400,31 @@ https://ecommerce-server-2.herokuapp.com/
    `access_token`: string (required)
 
 * **Body/Form Params**<br>
-  `{ "title" : "Eureka" }`<br>
+  `{ "ProductId" : 1 }`<br>
   **Required**
-  - `title` : string
+  - `ProductId` : integer
 
 * **Success Response:**
 
   * **Code:** 201 <br />
     **Content:**<br>
-    `{
-     [
+    `[
+    1,
+    [
         {
-            "ProjectId": 2,
-            "UserId": 1,
-            "createdAt": "2020-03-30T15:24:12.209Z",
-            "updatedAt": "2020-03-30T15:24:12.209Z",
-            "Project": {
-                "id": 2,
-                "UserId": 1,
-                "title": "liwetan"
-            },
-            "User": {
-                "id": 1,
-                "email": "user@mail.com",
-                "location": "-6.1741;106.8296"
-            }
+            "id": 2,
+            "UserId": 4,
+            "ProductId": 5,
+            "total_qty": 5,
+            "createdAt": "2020-04-21T13:32:28.708Z",
+            "updatedAt": "2020-04-21T13:32:32.352Z"
         }
     ]
-}`
+]`
  
 * **Error Responses:**
-  * **Code:** 400 VALIDATION ERROR <br />
-    **Content:** <br>
-    `{
-    "message": [
-        "TITLE MUST BE FILLED"
-    ]
-    }`
 
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+  * **Code:** 401 UNAUTHORIZED<br />
     **Content:** <br>
     `{
       "errors": [
@@ -395,58 +444,47 @@ https://ecommerce-server-2.herokuapp.com/
 <br>
 
 
-**Update Project**
+**Add Quantity**
 ----
-  Update project by ID
+  Increase quantity of items in cart by 1
 
 * **URL**
 
-  /projects/:id
+  /carts/:cartId
 
 * **Method:**
 
   `PUT`
   
 *  **URL Params**
-    `:id` : integer(required)
+    `:cartId` : integer(required)
 
 * **Header Params**<br>
    `access_token`: string (required)
 
 * **Body/Form Params**<br>
-  `{ "title" : "Eureka", "userid" : 1 }`<br>
-  **Required**
-  - `title` : string
-  - `userid` : integer
+  None
 
 * **Success Response:**
 
-  * **Code:** 201 <br />
+  * **Code:** 200 <br />
     **Content:** <br>
    `{
-     [
+    "updated": [
         {
-            "id": 3
-            "ProjectId": 2,
+            "id": 2,
             "UserId": 4,
-            "createdAt": "2020-03-30T15:24:12.209Z",
-            "updatedAt": "2020-03-30T15:24:12.209Z",
-            "Project": {
-                "id": 2,
-                "UserId": 4,
-                "title": "liwetan"
-            },
-            "User": {
-                "id": 4,
-                "email": "user@mail.com"
-            }
+            "ProductId": 5,
+            "total_qty": 7,
+            "createdAt": "2020-04-21T13:32:28.708Z",
+            "updatedAt": "2020-04-21T13:39:49.452Z"
         }
     ]
 }`
  
 * **Error Responses:**
 
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+  * **Code:** 401 UNAUTHORIZED<br />
     **Content:** <br>
     `{
       "errors": [
@@ -464,13 +502,76 @@ https://ecommerce-server-2.herokuapp.com/
 <hr>
 <br>
 
-**Delete Project**
+
+**Reduce Quantity**
 ----
-  Delete project by Id.
+  Reduce quantity of items in cart by 1. Destroys cart if only 1 qty left.
 
 * **URL**
 
-  /tasks/:id
+  /carts/:cartId
+
+* **Method:**
+
+  `PUT`
+  
+*  **URL Params**
+    `:cartId` : integer(required)
+
+* **Header Params**<br>
+   `access_token`: string (required)
+
+* **Body/Form Params**<br>
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br>
+   `{
+    "updated": [
+        {
+            "id": 2,
+            "UserId": 4,
+            "ProductId": 5,
+            "total_qty": 6,
+            "createdAt": "2020-04-21T13:32:28.708Z",
+            "updatedAt": "2020-04-21T13:39:49.452Z"
+        }
+    ]
+}`
+  **OR**
+  `null`
+
+
+* **Error Responses:**
+
+  * **Code:** 401 UNAUTHORIZED<br />
+    **Content:** <br>
+    `{
+      "errors": [
+          "jwt expired"
+      ]
+    }`
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** <br>
+    `{
+    "message": "NOT FOUND"
+    }`
+
+<br>
+<hr>
+<br>
+
+
+**Delete Project**
+----
+  Delete cart by.
+
+* **URL**
+
+  /carts/:id
 
 * **Method:**
 
@@ -489,14 +590,13 @@ https://ecommerce-server-2.herokuapp.com/
 
   * **Code:** 200 <br />
     **Content:** `{
-     {
-      "PROJECT DROPPED"
-    }
+    "data": 1,
+    "message": "Delete Success"
 }`
  
 * **Error Responses:**
 
-  * **Code:** 401 UNAUTHORIZED ACCESS <br />
+  * **Code:** 401 UNAUTHORIZED <br />
     **Content:** <br>
     `{
       "errors": [
@@ -513,6 +613,8 @@ https://ecommerce-server-2.herokuapp.com/
 <br>
 <hr>
 <br>
+
+
 
 <br>
 <hr>
