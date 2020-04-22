@@ -2,6 +2,7 @@ const {Product} = require('../models')
 const {customError} = require('../helpers/customError')
 const {defaultPic} = require('../helpers/defaultPic')
 const {post2Imgur} = require('../helpers/tesimgur')
+const imgur = require('imgur')
 let fs = require('fs')
 let pic
 class ProductController {
@@ -73,17 +74,17 @@ class ProductController {
         console.log(imgSrc);
 
         // TO UPLOAD 2 IMGUR, NEED TO CONVERT TO BASE-64 STRING FIRST
-        let b64d = fs.readFileSync(imgSrc, {encoding: 'base64'})
+        // let b64d = fs.readFileSync(imgSrc, {encoding: 'base64'})
 
-        console.log("WHO IS B64 VERSION?");
-        console.log(b64d);
-        console.log('\n\n\n');
+        // console.log("WHO IS B64 VERSION?");
+        // console.log(b64d);
+        // console.log('\n\n\n');
 
         // IMGUR TEST
 
 
         const {name, description, category, price, stock} = req.body
-        
+        const b64d = req.file.buffer.toString("base64")
 
 
         // if(!imgSrc) {
@@ -92,7 +93,8 @@ class ProductController {
         //     pic = b64d
         // }
 
-        return post2Imgur(b64d)
+        // return post2Imgur(b64d)
+        return post2Imgur(imgurSrc)
             .then(response => {
                 console.log("WHASSAP BLIMPO?");
                 console.log(response);
@@ -127,6 +129,19 @@ class ProductController {
             .catch(err => {
                 return next(err)
             })
+
+
+        // UPLOAD PAKE MULTER POLOS KE IMGUR
+        // console.log(req.file.buffer.toString('base64'));
+        // const encoded = req.file.buffer.toString('base64')
+
+        // imgur.uploadBase64(encoded)
+        //     .then(function (json) {
+        //         console.log(json.data.link);
+        //     })
+        //     .catch(function (err) {
+        //         console.error(err.message);
+        //     });
 
     }
 

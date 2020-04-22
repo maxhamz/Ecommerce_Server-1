@@ -47,6 +47,7 @@ const upload = multer({
 //   })
 
 //PLAIN MULTER
+// const upload = multer({})
 
 productRoutes.use(authentication)
 productRoutes.post('/', ProductController.createProduct)

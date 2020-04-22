@@ -27,6 +27,7 @@ async function post2Imgur(baseURL) {
 
     var formdata = new FormData();
     formdata.append("image", baseURL);
+    // formdata.append("type", "base64");
     // formdata.append("type", "file");
     // if(baseURL instanceof String) {
     //     formdata.append("type", "URL");
