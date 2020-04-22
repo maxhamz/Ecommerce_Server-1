@@ -2,7 +2,6 @@ const {Product} = require('../models')
 const {customError} = require('../helpers/customError')
 const {defaultPic} = require('../helpers/defaultPic')
 const {post2Imgur} = require('../helpers/tesimgur')
-const imgur = require('imgur')
 let fs = require('fs')
 let pic
 class ProductController {
@@ -71,15 +70,23 @@ class ProductController {
         console.log("REQ FILES IS");
         console.log(req.file);
         const {name, description, category, price, stock} = req.body
+
+        let imgSrc
+        let foto64
+
+        if(req.file) {
+            imgSrc = req.file.path
+            foto64 = fs.readFileSync(imgSrc, {encoding: 'base64'})
+        } else {
+            foto64 = req.body.imageSrc
+        }
         
-        const imgSrc = req.file.path
-        const foto64 = fs.readFileSync(imgSrc, {encoding: 'base64'})
 
         // UPLOAD IMGUR JALUR RESMI
         return post2Imgur(foto64)
             .then(response => {
-                // console.log("DOES IMGUR UPLOAD SUCCESS?");
-                // console.log(response);
+                console.log("DOES IMGUR UPLOAD SUCCESS?");
+                console.log(response);
 
                 // IF UPLOAD TO IMGUR SUCCESS
                 if(response) {

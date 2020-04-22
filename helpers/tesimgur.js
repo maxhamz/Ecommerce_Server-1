@@ -27,7 +27,17 @@ async function post2Imgur(baseURL) {
 
     var formdata = new FormData();
     formdata.append("image", baseURL);
-    formdata.append("type", "base64");
+
+    // CHECK IF BASEURL IS REGULAR URL OR BASE64
+    let base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+    if(base64regex.test(baseURL)) {
+        console.log("BASEURL IS BASE-64 ENCODED");
+        formdata.append("type", "base64");
+    } 
+    // else {
+    //     console.log("THIS IS JUST REGULAR URL");
+    //     formdata.append("type", "URL");
+    // }
     
 
     var requestOptions = {
