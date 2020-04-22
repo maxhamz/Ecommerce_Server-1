@@ -236,6 +236,7 @@ class ProductController {
     static dropProduct(req, res, next) {
         // console.log(">>> DELETING PRODUCT");
         // console.log(req.params.id);
+        let pname = ''
         return Product.findOne({
             where: {
                 id: Number(req.params.id)
@@ -246,6 +247,7 @@ class ProductController {
             // console.log(response);
             if(response) {
                 // console.log("PRODUCT FOUND");
+                pname = response.name
                 return Product.destroy({
                     where: {
                         id: response.id
@@ -257,7 +259,7 @@ class ProductController {
             }
         })
         .then(_ => {
-            return res.status(200).json({message: 'PRODUCT DROPPED FROM INVENTORY'})
+            return res.status(200).json({message: `PRODUCT ${pname} DROPPED FROM STORE INVENTORY`})
         })
         .catch(err => {
             return next(err)

@@ -71,8 +71,16 @@ module.exports = function(io) {
         socket.on("product_deleted", (payload) => {
             console.log(">>>> PRODUCT DELETED!");
             console.log(payload);
-            io.emit('deleted_product', 'PRODUCT DELETED')
+            io.emit('deleted_product', payload)
         });
+
+
+
+        // WHEN USER CHECKS OUT SOME ITESM
+        socket.on('checkedout', (payload) => {
+            console.log(">>> SOME ITEMS PURCHASED!");
+            io.emit('usercheckedout', payload)
+        })
 
 
 
