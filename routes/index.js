@@ -21,7 +21,8 @@ module.exports = function(io) {
         //REGISTER
         socket.on('registered', (payload) => {
             console.log("SERVER SEZ: WELCOME, NEW USER!");
-            console.log(payload.data);
+            console.log(payload);
+            socket.emit('registered2', payload)
         })
 
         //LOGIN
