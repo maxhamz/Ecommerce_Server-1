@@ -7,104 +7,87 @@ let fs = require('fs')
 let pic
 class ProductController {
 
-    static createProduct(req, res, next) {
+    // FOR TESTING PURPOSE
+    // static createProduct(req, res, next) {
 
-        // console.log(">>> CONTROLLERS: CREATE PRODUCT");
-        const {name, description, category, image_url, price, stock} = req.body
-        console.log(req.body);
-        // console.log(req.body);
-        // console.log(req.headers);
-        // console.log(req.body);
+    //     // console.log(">>> CONTROLLERS: CREATE PRODUCT");
+    //     const {name, description, category, image_url, price, stock} = req.body
+    //     console.log(req.body);
+    //     // console.log(req.body);
+    //     // console.log(req.headers);
+    //     // console.log(req.body);
 
-        if(!image_url) {
-            pic = defaultPic(category)
-        } else {
-            pic = image_url
-        }
+    //     if(!image_url) {
+    //         pic = defaultPic(category)
+    //     } else {
+    //         pic = image_url
+    //     }
 
-        return post2Imgur(pic)
-            .then(response => {
-                console.log("WHASSAP BLIMPO?");
-                console.log(response);
+    //     return post2Imgur(pic)
+    //         .then(response => {
+    //             console.log("WHASSAP BLIMPO?");
+    //             console.log(response);
 
-                if(response) {
-                    return Product.create({
-                        name: name,
-                        description: description,
-                        category: category,
-                        image_url: response,
-                        price: price,
-                        stock: stock
-                    })
-                } else {
-                    return Product.create({
-                        name: name,
-                        description: description,
-                        category: category,
-                        image_url: defaultPic(category),
-                        price: price,
-                        stock: stock
-                    })
-                }
+    //             if(response) {
+    //                 return Product.create({
+    //                     name: name,
+    //                     description: description,
+    //                     category: category,
+    //                     image_url: response,
+    //                     price: price,
+    //                     stock: stock
+    //                 })
+    //             } else {
+    //                 return Product.create({
+    //                     name: name,
+    //                     description: description,
+    //                     category: category,
+    //                     image_url: defaultPic(category),
+    //                     price: price,
+    //                     stock: stock
+    //                 })
+    //             }
 
                 
-            })
-            .then(response => {
-                // console.log("PRODUCT ADDED TO INVENTORY");
-                // console.log(response);
-                return res.status(201).json(response)
-            })
-            .catch(err => {
-                return next(err)
-            })
+    //         })
+    //         .then(response => {
+    //             // console.log("PRODUCT ADDED TO INVENTORY");
+    //             // console.log(response);
+    //             return res.status(201).json(response)
+    //         })
+    //         .catch(err => {
+    //             return next(err)
+    //         })
 
-    }
+    // }
+    // TEST CREATEPRODUCT END
 
+    // FOR DEVELOPMENT/DEPLOY
+    static createProduct (req, res, next) {
 
-    static createProduct2 (req, res, next) {
-
-        console.log(">>> CONTROLLERS: CREATE PRODUCT mMULTER");
+        console.log(">>> CONTROLLERS: CREATE PRODUCT. MULTER ADDED");
         console.log("REQ BODY IS");
         console.log(req.body);
         console.log("REQ FILES IS");
         console.log(req.file);
-        const imgSrc = req.file.path
-
-        console.log("THE UPLOADED PATH IS");
-        console.log(imgSrc);
-
-        // TO UPLOAD 2 IMGUR, NEED TO CONVERT TO BASE-64 STRING FIRST
-        // let b64d = fs.readFileSync(imgSrc, {encoding: 'base64'})
-
-        // console.log("WHO IS B64 VERSION?");
-        // console.log(b64d);
-        // console.log('\n\n\n');
-
-        // IMGUR TEST
-
-
         const {name, description, category, price, stock} = req.body
-        const b64d = req.file.buffer.toString("base64")
+        
+        const imgSrc = req.file.path
+        const foto64 = fs.readFileSync(imgSrc, {encoding: 'base64'})
 
-
-        // if(!imgSrc) {
-        //     pic = defaultPic(category)
-        // } else {
-        //     pic = b64d
-        // }
-
-        // return post2Imgur(b64d)
-        return post2Imgur(imgurSrc)
+        // UPLOAD IMGUR JALUR RESMI
+        return post2Imgur(foto64)
             .then(response => {
-                console.log("WHASSAP BLIMPO?");
-                console.log(response);
+                // console.log("DOES IMGUR UPLOAD SUCCESS?");
+                // console.log(response);
 
+                // IF UPLOAD TO IMGUR SUCCESS
                 if(response) {
                     return Product.create({
                         name: name,
                         description: description,
                         category: category,
-                        image_url: response,
+                        image_url: response, // USE IMGUR'S URL
                         price: price,
                         stock: stock
                     })
@@ -113,7 +96,7 @@ class ProductController {
                         name: name,
                         description: description,
                         category: category,
-                        image_url: defaultPic(category),
+                        image_url: defaultPic(category), // uSE DEFAULT URL
                         price: price,
                         stock: stock
                     })
@@ -131,78 +114,6 @@ class ProductController {
             })
 
 
-        // UPLOAD PAKE MULTER POLOS KE IMGUR
-        // console.log(req.file.buffer.toString('base64'));
-        // const encoded = req.file.buffer.toString('base64')
-
-        // imgur.uploadBase64(encoded)
-        //     .then(function (json) {
-        //         console.log(json.data.link);
-        //     })
-        //     .catch(function (err) {
-        //         console.error(err.message);
-        //     });
-
-    }
-
-
-    static createProduct3 (req, res, next) {
-
-        console.log(">>> CONTROLLERS: CREATE PRODUCT mMULTER");
-        console.log("REQ BODY IS");
-        console.log(req.body);
-        console.log("REQ FILES IS");
-        console.log(req.file);
-        // const imgSrc = req.file.path
-
-        // console.log("THE UPLOADED PATH IS");
-        // console.log(imgSrc);
-
-        // const {name, description, category, price, stock} = req.body
-        
-
-
-        // if(!imgSrc) {
-        //     pic = defaultPic(category)
-        // } else {
-        //     pic = b64d
-        // }
-
-        // return post2Imgur(b64d)
-        //     .then(response => {
-        //         console.log("WHASSAP BLIMPO?");
-        //         console.log(response);
-
-        //         if(response) {
-        //             return Product.create({
-        //                 name: name,
-        //                 description: description,
-        //                 category: category,
-        //                 image_url: response,
-        //                 price: price,
-        //                 stock: stock
-        //             })
-        //         } else {
-        //             return Product.create({
-        //                 name: name,
-        //                 description: description,
-        //                 category: category,
-        //                 image_url: defaultPic(category),
-        //                 price: price,
-        //                 stock: stock
-        //             })
-        //         }
-
-                
-        //     })
-        //     .then(response => {
-        //         console.log("PRODUCT ADDED TO INVENTORY");
-        //         // console.log(response);
-        //         return res.status(201).json(response)
-        //     })
-        //     .catch(err => {
-        //         return next(err)
-        //     })
 
     }
 
