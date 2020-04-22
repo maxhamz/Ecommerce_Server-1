@@ -51,7 +51,6 @@ const upload = multer({
 productRoutes.use(authentication)
 productRoutes.post('/', ProductController.createProduct)
 productRoutes.post('/multer', upload.single('imageSrc'), ProductController.createProduct2)
-// productRoutes.post('/multer', upload.single('imageSrc'), ProductController.createProduct3)
 productRoutes.get('/', ProductController.getAllProducts)
 productRoutes.get('/:id', ProductController.getOneProduct)
 productRoutes.put('/:id', authorization, ProductController.editProduct)
