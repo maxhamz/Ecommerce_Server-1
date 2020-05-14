@@ -1,5 +1,4 @@
 const app = require('../app.js')
-const tesPropicPath = '/mnt/c/Users/sandbox/Documents/HACKTIV8/PHASE2R/obat_bebas_terbatas.jpg'
 const {
     createToken
 } = require('../helpers/jwt')
@@ -18,7 +17,7 @@ const testInput = {
     name: 'Panadol',
     description: 'paracetamol 20mg',
     category: 'otc',
-    image_url: '/mnt/c/Users/sandbox/Documents/HACKTIV8/PHASE2R/obat_bebas.jpg',
+    image_url: '',
     price: 5000,
     stock: 5000
 }
@@ -85,19 +84,13 @@ describe('Product services', () => {
                     .set({
                         access_token: testToken
                     })
-                    .field("name", testInput.name)
-                    .field("description", testInput.description)
-                    .field("category", testInput.category)
-                    .attach("imageSrc", testInput.image_url)
-                    .field("price", 5000)
-                    .field("stock", 5000)
+                    .send(testInput)
                     .end((error, response) => {
                         if (error) {
                             return done(error)
                         } else {
-                            // console.log("RESPONSE STATUS FOR ADD PRODUCT SUCCESS IS");
+
                             // console.log(response.status);
-                            // console.log("RESPONSE BODY FOR ADD PRODUCT SUCCESS IS");
                             // console.log(response.body);
 
                             expect(response.status).toBe(201)
@@ -130,12 +123,12 @@ describe('Product services', () => {
                     name: null,
                     description: 'adadeh',
                     category: 'narkoba',
-                    image_url: '/mnt/c/Users/sandbox/Documents/HACKTIV8/PHASE2R/obat_bebas_terbatas.jpg',
+                    image_url: '',
                     price: -2000,
                     stock: -2000
                 }
                 errors = [
-                    // 'NAME REQUIRED',
+                    'NAME REQUIRED',
                     'PLEASE ENTER VALID DRUG CATEGORY',
                     'PRICE MUST BE NON-NEGATIVE',
                     'STOCK MUST BE NON-NEGATIVE'
@@ -145,26 +138,17 @@ describe('Product services', () => {
                     .set({
                         access_token: testToken
                     })
-                    // .send(wrongInput)
-                    .field("name", "")
-                    .field("description", wrongInput.description)
-                    .field("category", wrongInput.category)
-                    .attach("imageSrc", tesPropicPath)
-                    .field("price", wrongInput.price)
-                    .field("stock", wrongInput.stock)
+                    .send(wrongInput)
                     .end((error, response) => {
                         if (error) {
                             return done(error)
                         } else {
 
-                            // console.log("RESPONSE STATUS FOR ADD PRODUCT ERROR IS");
                             // console.log(response.status);
-                            // console.log("RESPONSE BODY FOR ADD PRODUCT ERROR IS");
-                            // console.log(response.body);
+                            // console.log(response.body.errors);
 
                             expect(response.status).toBe(400)
                             expect(response.body).toHaveProperty('errors', errors)
-                            // expect(response.body).toHaveProperty('errors', expect.any(Array))
                             return done()
                         }
                     })
@@ -283,7 +267,7 @@ describe('Product services', () => {
                     name: 'Codipront',
                     description: 'codein 40mg',
                     category: 'prescription',
-                    image_url: '/mnt/c/Users/sandbox/Documents/HACKTIV8/PHASE2R/obat_bebas_terbatas.jpg',
+                    image_url: '',
                     price: 80000,
                     stock: 6000
                 }
@@ -293,22 +277,14 @@ describe('Product services', () => {
                     .set({
                         access_token: testToken
                     })
-                    // .send(testEdit)
-                    .field("name", testEdit.name)
-                    .field("description", testEdit.description)
-                    .field("category", testEdit.category)
-                    .attach("imageSrc", testEdit.image_url)
-                    .field("price", testEdit.price)
-                    .field("stock", testEdit.stock)
+                    .send(testEdit)
                     .end((error, response) => {
                         if (error) {
                             return done(error)
                         } else {
 
-                            console.log("RESPONSE STATUS FOR EDIT PRODUCT SUCCESS IS");
-                            console.log(response.status);
-                            console.log("RESPONSE BODY FOR EDIT PRODUCT SUCCESS IS");
-                            console.log(response.body);
+                            // console.log(response.status);
+                            // console.log(response.body);
 
                             expect(response.status).toBe(200)
 
@@ -336,7 +312,7 @@ describe('Product services', () => {
             test('Should return error 400 because of wrong name, category, stock & price', (done) => {
                 // TEST EDIT
                 let wrongEdit = {
-                    name: '',
+                    name: null,
                     description: 'codein 40mg',
                     category: 'narkoba',
                     image_url: '',
@@ -345,7 +321,7 @@ describe('Product services', () => {
                 }
 
                 errors = [
-                    // 'NAME REQUIRED',
+                    'NAME REQUIRED',
                     'PLEASE ENTER VALID DRUG CATEGORY',
                     'PRICE MUST BE NON-NEGATIVE',
                     'STOCK MUST BE NON-NEGATIVE'
@@ -356,23 +332,16 @@ describe('Product services', () => {
                     .set({
                         access_token: testToken
                     })
-                    // .send(wrongEdit)
-                    .field("name", wrongEdit.name)
-                    .field("description", wrongEdit.description)
-                    .field("category", wrongEdit.category)
-                    .attach("imageSrc", wrongEdit.image_url)
-                    .field("price", wrongEdit.price)
-                    .field("stock", wrongEdit.stock)
+                    .send(wrongEdit)
                     .end((error, response) => {
                         if (error) {
                             return done(error)
                         } else {
 
-                            console.log(response.status);
-                            console.log(response.body);
+                            // console.log(response.status);
+                            // console.log(response.body);
 
                             expect(response.status).toBe(400)
-                            // expect(response.body).toHaveProperty('errors', expect.any(Array))
                             expect(response.body).toHaveProperty('errors', errors)
 
                             return done()
@@ -390,7 +359,7 @@ describe('Product services', () => {
         describe('DELETE /products/:id ', () => {
 
             test('Should return status 200  with object of id, name, description, category, price & stock', (done) => {
-                // let msg = 'PRODUCT Panadol DROPPED FROM STORE INVENTORY'
+                let msg = 'PRODUCT DROPPED FROM INVENTORY'
                 request(app)
                     .delete(`/products/${sampleProductId}`)
                     .set({
@@ -405,7 +374,7 @@ describe('Product services', () => {
                             // console.log(response.body);
 
                             expect(response.status).toBe(200)
-                            expect(response.body).toHaveProperty('message', expect.any(String))
+                            expect(response.body).toHaveProperty('message', msg)
 
                             return done()
                         }

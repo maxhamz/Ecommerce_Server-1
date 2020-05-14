@@ -71,8 +71,8 @@ class ProductController {
         console.log(req.file);
         const {name, description, category, price, stock} = req.body
 
-        let imgSrc
-        let foto64
+        var imgSrc
+        var foto64
 
         if(req.file) {
             imgSrc = req.file.path
@@ -158,6 +158,92 @@ class ProductController {
             .catch(err => {
                 return next(err)
             })
+
+    }
+
+
+    static editProduct1(req, res, next) {
+        console.log(">>> CONTROLLERS: EDIT PRODUCT WITH MULTER");
+        console.log("REQ BODY IS");
+        console.log(req.body);
+        console.log("REQ FILES IS");
+        console.log(req.file);
+        const {name, description, category, price, stock} = req.body
+
+        var imgSrc
+        var foto64
+
+        if(req.file) {
+            imgSrc = req.file.path
+            foto64 = fs.readFileSync(imgSrc, {encoding: 'base64'})
+        } else {
+            foto64 = req.body.imageSrc
+        }
+
+        return Product.findOne({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        .then(response => {
+            if(response) {
+                console.log("PRODUCT FOUND");
+                console.log(response)
+
+                var image_url = response.image_url
+
+                if(!image_url) {
+                    pic = defaultPic(category)
+                } else {
+                    pic = image_url
+                }
+
+                let imguregex = /imgur/gi
+                let imgurd = pic.match(imguregex)
+
+                console.log("@ EDIT PRODUCT CONTROLLER, IMGURD IS");
+                console.log(imgurd);
+
+                if(!imgurd) {
+                    return post2Imgur(pic)
+                } else {
+                    return pic
+                }
+                
+    
+            }
+        })
+        .then(response => {
+                console.log("WHASSAP BLIMPO?");
+                console.log(response);
+
+                if(!(response instanceof Error)) {
+                    return Product.update({
+                        name: name,
+                        description: description,
+                        category: category,
+                        image_url: response,
+                        price: price,
+                        stock: stock
+                    }, {
+                        where: {
+                            id: req.params.id
+                        },
+                        returning: true
+                    })
+                } else {
+                    throw new customError(400, 'IMAGE UPLOAD FAILED')
+                }
+
+                
+            })
+        .then(response => {
+            console.log("PRODUCT UPDATED");
+            return res.status(200).json(response[1][0])
+        })
+        .catch(err => {
+            return next(err)
+        })
 
     }
 

@@ -46,7 +46,8 @@ productRoutes.use(authentication)
 productRoutes.post('/', upload.single('imageSrc'), ProductController.createProduct) // DEV/DEPLOY ROUTE
 productRoutes.get('/', ProductController.getAllProducts)
 productRoutes.get('/:id', ProductController.getOneProduct)
-productRoutes.put('/:id', authorization, ProductController.editProduct)
+// productRoutes.put('/:id', authorization, ProductController.editProduct)
+productRoutes.put('/:id', authorization, upload.single('imageSrc'), ProductController.editProduct1)
 productRoutes.delete('/:id', authorization, ProductController.dropProduct)
 
 module.exports = productRoutes
