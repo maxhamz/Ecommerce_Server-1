@@ -798,16 +798,14 @@ https://ecommerce-server-2.herokuapp.com/
 * **Header Params**<br>
    `access_token`: string (required)
 
-* **Body/Form Params**<br>
+* **Form Params**<br>
   **Required**
   - `name` : string
   - `description`: string
+  - `image_url`: jpg/png/svg files
   - `category[otc, otc_limited, prescription, herbal]`: string
   - `stock`: integer
   - `price`: integer
-
-  **Optional**
-  - `image_url`: string
 
 * **Success Response:**
 
@@ -881,16 +879,14 @@ https://ecommerce-server-2.herokuapp.com/
 * **Header Params**<br>
    `access_token`: string (required)
 
-* **Body/Form Params**<br>
+* **Form Params**<br>
   **Required**
   - `name` : string
   - `description`: string
+  - `image_url`: jpg/png/svg files
   - `category[otc, otc_limited, prescription, herbal]`: string
   - `stock`: integer
   - `price`: integer
-
-  **Optional**
-  - `image_url`: string
 
 * **Success Response:**
 
