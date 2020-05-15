@@ -802,10 +802,12 @@ https://ecommerce-server-2.herokuapp.com/
   **Required**
   - `name` : string
   - `description`: string
-  - `image_url`: jpg/png/svg files
   - `category[otc, otc_limited, prescription, herbal]`: string
   - `stock`: integer
   - `price`: integer
+
+  **Optional**
+  - `image_url`: jpg/png/svg files
 
 * **Success Response:**
 
@@ -883,10 +885,12 @@ https://ecommerce-server-2.herokuapp.com/
   **Required**
   - `name` : string
   - `description`: string
-  - `image_url`: jpg/png/svg files
   - `category[otc, otc_limited, prescription, herbal]`: string
   - `stock`: integer
   - `price`: integer
+
+  **Optional**
+  - `image_url`: jpg/png/svg files
 
 * **Success Response:**
 
